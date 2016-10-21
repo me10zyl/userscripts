@@ -1,13 +1,16 @@
 // ==UserScript==
 // @name         SYK DEVELOP
 // @namespace    http://me10zyl.github.io/userscripts
-// @version      1.1
+// @version      1.2
 // @updateURL    http://me10zyl.github.io/userscripts/sykdev.user.js
 // @downloadURL  http://me10zyl.github.io/userscripts/sykdev.user.js
 // @description  try to take over the world!
 // @author       Zeng YiLun
 // @match        http://secure.syk.com/*
 // @match        http://ecms.group.qa.sunyuki.com/*
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @grant        unsafeWindow
 // ==/UserScript==
 
 (function () {
@@ -37,9 +40,9 @@
         this.iframe = null;
     };
 
-    var ToggleButton = function (name, func, id, toggle) {
+    var ToggleButton = function (name, func, id, initialize) {
         Button.apply(this, arguments);
-        this.toggle = toggle;
+        this.init = initialize;
     };
 
 
@@ -110,10 +113,59 @@
 
     var remSelect = {
         setToggle : function (toggle) {
-            localStorage.setItem("sykdev-rem-select-toggle", JSON.stringify(toggle));
+            localStorage.setItem("sykdev-rem-select-toggle", toggle);
         },
         getToggle : function () {
             return localStorage.getItem("sykdev-rem-select-toggle");
+        },
+        setIndex : function(index1){
+            var acc = $(".easyui-accordion");
+            var p = acc.accordion('getSelected');
+            if(p){
+                var index = acc.accordion('getPanelIndex', p);
+                localStorage.setItem("sykdev-rem-select-index", index);
+            }
+        },
+        getIndex : function(){
+            return localStorage.getItem("sykdev-rem-select-index");
+        },
+        setItemIndex: function(index){
+             localStorage.setItem("sykdev-rem-select-item-index", index);
+        },
+         getItemIndex: function(){
+             return localStorage.getItem("sykdev-rem-select-item-index");
+        },
+        onToggle : function(toggle){
+            var icon = $("#"+toggle.id).find(".l-btn-icon");
+              if(toggle.toggle == "true"){
+                  icon.addClass("icon-ok");
+                  icon.removeClass("icon-cancel");
+              }else{
+                    icon.removeClass("icon-ok");
+                  icon.addClass("icon-cancel");
+              }
+        },
+        init : function(){
+            this.toggle = remSelect.getToggle();
+            remSelect.onToggle(this);
+             var acc = $(".easyui-accordion");
+            acc.accordion("options").onSelect = function(title,index){
+                 remSelect.setIndex();
+            };
+            acc.find("li a").click(function(){
+                var tree = $(this).closest(".tree");
+                var i = $(this).closest("li").index(".tree li");
+                remSelect.setItemIndex(i);
+            });
+            if(this.toggle == "true"){           
+                var index = remSelect.getIndex();
+                $("body").append("<script desc='created by sykdev.user.js(tamperMoney)''>$('.easyui-accordion').accordion('select',"+index+")");
+                var a = acc.find(".tree li:eq("+remSelect.getItemIndex()+") a");
+                var func = a.attr("onclick");
+                eval(func);
+                a.parent().addClass("selected");
+                a.closest("div").addClass("tree-node-selected");
+            }
         }
     };
 
@@ -309,9 +361,12 @@
             });
         }
     }
-
+ 
     function rememberSelected(){
-         
+        if(this.toggle == "true" || this.toggle == "false"){
+            remSelect.setToggle(this.toggle);
+            remSelect.onToggle(this);
+        }
     }
     
 
@@ -350,7 +405,7 @@
     var btns = [
         // new Button('mock', mockData, 'sykdev-btn-mock'),
         new Button('mock', mockSettings),
-        new ToggleButton('记忆选择项', rememberSelected, 'sykdev-btn-rem-select', remSelect.getToggle()),
+        new ToggleButton('记忆选择项', rememberSelected, 'sykdev-btn-rem-select',remSelect.init),
         new Button('开/关Name显示', toggleNameVisible),
         new Button('生成校验空Java代码', getFieldsOfRequired)
     ];
@@ -369,7 +424,7 @@
            (function(arg){
             mm.menu({
                 onClick : function(item){
-                   arg.iframe = tool.getCurrentPanel();
+                   //arg.iframe = tool.getCurrentPanel();
                    arg.toggle = item.name;
                    arg.func.call(arg);
                 }
@@ -392,6 +447,9 @@
                 arg.func.call(tool.getCurrentPanel());
             });
         })(btn);
+        if(btn.init){
+            btn.init();
+        }
     }
 })();
 
