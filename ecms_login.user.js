@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ECMS Login Keep
 // @namespace    http://me10zyl.github.io/userscripts
-// @version      0.3
+// @version      0.4
 // @updateURL    http://me10zyl.github.io/userscripts/ecms_login.user.js
 // @downloadURL  http://me10zyl.github.io/userscripts/ecms_login.user.js
 // @description  Login Save Password!
@@ -16,7 +16,7 @@
 (function($) {
     'use strict';
      var key = "elo-form";
-    var btn = $('<a herf="javascript:void(0)" style="position: absolute;left: 142px;z-index:20;" class="elo-btn">▲</a>');
+    var btn = $('<a herf="javascript:void(0)" style="position: absolute;left: 136px;z-index:20;" class="elo-btn">卍</a>');
     var ul = $('<ul style="position: absolute;z-index:10;width:222px;background:#ccc;margin-top:-4px;font-size:11px;" id="elo-ul"></ul>');
     var styles = ".elo-btn:hover{ cursor:pointer;} .elo-btn{} #elo-ul li:hover{ background:#ddd;cursor:pointer; }";
     GM_addStyle(styles);
@@ -42,8 +42,8 @@
      }
      ust.after(btn);
      btn.hover(function(){
-         $(this).text("▼");
-     }, function(){ $(this).text("▲");});
+         $(this).text("卐");
+     }, function(){ $(this).text("卍");});
     btn.click(function(){
         var list = GM_getValue(key);
         ul.html("");
