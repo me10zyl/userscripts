@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         SYK DEVELOP
 // @namespace    http://me10zyl.github.io/userscripts
-// @version      1.2
+// @version      1.3
 // @updateURL    http://me10zyl.github.io/userscripts/sykdev.user.js
 // @downloadURL  http://me10zyl.github.io/userscripts/sykdev.user.js
 // @description  try to take over the world!
 // @author       Zeng YiLun
 // @match        http://secure.syk.com/*
 // @match        http://ecms.group.qa.sunyuki.com/*
+// @match 		 http://oms.qa.sunyuki.net/*
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @grant        unsafeWindow
