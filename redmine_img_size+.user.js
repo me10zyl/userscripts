@@ -8,6 +8,7 @@
 // @downloadURL  http://me10zyl.github.io/userscripts/redmine_img_size+.user.js
 // @require      https://code.jquery.com/jquery-2.1.4.min.js
 // @match        http://ecc.group.sunyuki.com/*
+// @match        http://ecc.collabs.sunyuki.net/*
 // @grant        GM_addStyle
 // ==/UserScript==
 
