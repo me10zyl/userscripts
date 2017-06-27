@@ -8,6 +8,7 @@
 // @author       Zeng YiLun
 // @match        http://secure.syk.com:8080/login*
 // @match        http://ecms.group.qa.sunyuki.com/login*
+// @match        http://oms.qa.sunyuki.net/login*
 // @grant        GM_addStyle
 // @grant        GM_setValue
 // @grant        GM_getValue
